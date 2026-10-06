@@ -3,30 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anyós vs. Te</title>
+  <title>Anyós: Fatal Rúgás</title>
   <style>
     :root {
-      --bg1: #120d1d;
-      --bg2: #1a112a;
-      --panel: rgba(18, 12, 27, 0.85);
-      --red: #ff4c5f;
-      --red2: #ff2c40;
-      --orange: #ffb347;
-      --gold: #ffd86b;
-      --cyan: #78ebff;
-      --green: #7ef9a4;
-      --white: #f5f7fb;
-      --shadow: rgba(0,0,0,0.52);
+      --bg-1: #0d0a16;
+      --bg-2: #180f26;
+      --bg-3: #2d173a;
+      --panel: rgba(19, 14, 32, 0.88);
+      --cyan: #74ebff;
+      --cyan-2: #2bc6ff;
+      --red: #ff546d;
+      --red-2: #d92746;
+      --gold: #ffdb6b;
+      --orange: #ff8e40;
+      --green: #6ef7a1;
+      --white: #f4f7ff;
+      --shadow: rgba(0,0,0,0.55);
     }
 
     * { box-sizing: border-box; }
 
     html, body {
       margin: 0;
+      width: 100%;
       height: 100%;
       background:
-        radial-gradient(circle at 50% 15%, rgba(98, 97, 172, 0.35), transparent 28%),
-        linear-gradient(180deg, var(--bg2), var(--bg1));
+        radial-gradient(circle at center, rgba(93,77,178,0.28), transparent 32%),
+        linear-gradient(180deg, var(--bg-2), var(--bg-1));
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       color: var(--white);
       overflow: hidden;
@@ -38,36 +41,48 @@
     }
 
     .game-shell {
-      width: min(1100px, 94vw);
-      height: min(700px, 84vh);
-      background: rgba(18, 12, 27, 0.9);
-      border: 2px solid rgba(255,255,255,0.15);
-      border-radius: 18px;
-      box-shadow:
-        0 0 0 2px rgba(120, 235, 255, 0.1),
-        0 30px 80px rgba(0,0,0,0.55);
-      overflow: hidden;
       position: relative;
+      width: min(1120px, 96vw);
+      height: min(720px, 88vh);
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(18, 12, 26, 0.96);
+      border: 2px solid rgba(255,255,255,0.12);
+      box-shadow:
+        0 0 0 2px rgba(120, 235, 255, 0.08),
+        0 25px 90px rgba(0,0,0,0.62),
+        inset 0 0 40px rgba(255,255,255,0.02);
+    }
+
+    .game-shell.shake {
+      animation: shake 0.22s linear 2;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      50% { transform: translateX(6px); }
+      75% { transform: translateX(-4px); }
     }
 
     .hud {
       position: absolute;
-      top: 16px;
       left: 18px;
       right: 18px;
-      z-index: 15;
+      top: 16px;
+      z-index: 20;
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: flex-start;
       gap: 18px;
       pointer-events: none;
     }
 
     .fighter-info {
-      width: 42%;
+      width: min(38%, 400px);
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 7px;
     }
 
     .fighter-info.right {
@@ -77,12 +92,13 @@
     .label-row {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      font-size: 12px;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 800;
-      font-size: 13px;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.7);
+      font-weight: 900;
+      color: rgba(255,255,255,0.85);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
     }
 
     .label-row .dot {
@@ -90,7 +106,7 @@
       height: 10px;
       border-radius: 50%;
       display: inline-block;
-      box-shadow: 0 0 14px currentColor;
+      box-shadow: 0 0 18px currentColor;
     }
 
     .player .dot { color: var(--cyan); background: var(--cyan); }
@@ -98,35 +114,58 @@
 
     .health-bar {
       position: relative;
-      height: 22px;
+      width: 100%;
+      height: 24px;
       border-radius: 12px;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.12);
       overflow: hidden;
-      box-shadow: inset 0 0 16px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.08);
+      box-shadow: inset 0 0 18px rgba(0,0,0,0.4);
     }
 
     .health-fill {
       position: absolute;
       inset: 0 auto 0 0;
       width: 100%;
-      background: linear-gradient(90deg, #63f3ad, #3fe6a0 65%, #bfef63 100%);
       border-radius: 12px;
       transition: width 0.25s ease, filter 0.25s ease;
+      box-shadow: inset 0 0 12px rgba(255,255,255,0.28);
+    }
+
+    .player .health-fill {
+      background: linear-gradient(90deg, #95f7ff 0%, #62d8ff 40%, #3cc1ff 100%);
     }
 
     .enemy .health-fill {
-      background: linear-gradient(90deg, #ff7b6e, #ff4f53 60%, #d52335 100%);
+      background: linear-gradient(90deg, #ff9a88 0%, #ff5c63 42%, #c2264a 100%);
+    }
+
+    .round-tag {
+      position: absolute;
+      top: 58px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 18;
+      font-weight: 900;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.8);
+      background: rgba(9, 8, 20, 0.5);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 11px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.3);
     }
 
     .arena {
       position: relative;
-      height: 100%;
       width: 100%;
+      height: 100%;
       background:
-        linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.12)),
-        radial-gradient(circle at 50% 20%, rgba(39, 67, 130, 0.32), transparent 25%),
-        linear-gradient(180deg, #1b1b35 0%, #4a2147 30%, #2e1b2d 100%);
+        linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.08)),
+        radial-gradient(circle at 50% 18%, rgba(79,91,184,0.35), transparent 23%),
+        linear-gradient(180deg, #18162b 0%, #3d1f3f 28%, #2a1e2f 100%);
       overflow: hidden;
     }
 
@@ -137,10 +176,22 @@
       background:
         repeating-linear-gradient(
           90deg,
-          rgba(255,255,255,0.02) 0 2px,
-          transparent 2px 39px
+          rgba(255,255,255,0.02) 0, rgba(255,255,255,0.02) 1px,
+          transparent 1px, transparent 32px
         );
-      opacity: 0.7;
+      opacity: 0.8;
+    }
+
+    .sun-glow {
+      position: absolute;
+      left: 50%;
+      top: 10%;
+      transform: translateX(-50%);
+      width: 450px;
+      height: 310px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.22), rgba(101,129,255,0.14), transparent 66%);
+      filter: blur(18px);
     }
 
     .floor {
@@ -148,78 +199,65 @@
       left: 0;
       right: 0;
       bottom: 0;
-      height: 117px;
+      height: 120px;
       background:
-        linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.24)),
-        linear-gradient(90deg, #31232f, #1e1d2c 40%, #2b273b 100%);
-      border-top: 4px solid rgba(255,255,255,0.09);
-      box-shadow: inset 0 8px 18px rgba(255,255,255,0.06);
+        linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.2)),
+        linear-gradient(90deg, #2b2433, #1e1a29 30%, #362b3c 100%);
+      border-top: 4px solid rgba(255,255,255,0.08);
+      box-shadow: inset 0 10px 18px rgba(255,255,255,0.05);
     }
 
     .floor::before {
       content: "";
       position: absolute;
       inset: 0;
-      background:
-        repeating-linear-gradient(
-          90deg,
-          rgba(255,255,255,0.08) 0 2px,
-          transparent 2px 28px
-        );
-      opacity: 0.15;
+      background: repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0 2px, transparent 2px 22px);
+      opacity: 0.12;
     }
 
     .fighter {
-      --x: 0px;
-      --scale: 1;
+      --tx: 0px;
+      --scaleX: 1;
       position: absolute;
-      left: 50%;
-      bottom: 106px;
-      width: 160px;
-      height: 240px;
-      transform: translateX(var(--x)) scaleX(var(--scale));
+      bottom: 108px;
+      width: 170px;
+      height: 246px;
+      transform: translateX(var(--tx)) scaleX(var(--scaleX));
       transition: transform 0.12s ease-out, filter 0.12s ease;
       z-index: 10;
+      filter: drop-shadow(0 24px 18px rgba(0,0,0,0.28));
     }
 
     .fighter.player {
-      left: 25%;
+      left: 24%;
     }
 
     .fighter.enemy {
       left: 72%;
-      --scale: -1;
+      --scaleX: -1;
     }
 
     .fighter .shadow {
       position: absolute;
       left: 50%;
-      bottom: -24px;
-      width: 112px;
+      bottom: -18px;
+      width: 110px;
       height: 22px;
-      background: rgba(0,0,0,0.38);
       transform: translateX(-50%);
+      background: rgba(0,0,0,0.34);
       border-radius: 50%;
-      filter: blur(2px);
-    }
-
-    .fighter .body {
-      position: absolute;
-      inset: 24px 36px 0 36px;
-      background: linear-gradient(180deg, #ffe8c9, #d1986a 60%, #8d5d3b);
-      border-radius: 42% 42% 18% 18% / 30% 30% 16% 16%;
-      box-shadow: inset -10px -8px 0 rgba(0,0,0,0.08);
+      filter: blur(3px);
     }
 
     .fighter .head {
       position: absolute;
-      width: 62px;
-      height: 68px;
       left: 50%;
       top: 0;
+      width: 64px;
+      height: 70px;
       transform: translateX(-50%);
-      border-radius: 44% 44% 48% 48%;
-      background: linear-gradient(180deg, #f5d0a4, #d99664 70%, #ba775a);
+      border-radius: 48% 48% 46% 46%;
+      background: linear-gradient(180deg, #f6d7ae, #d18f62 68%, #9d5f46);
       box-shadow: inset -8px -8px 0 rgba(0,0,0,0.06);
     }
 
@@ -228,10 +266,10 @@
       content: "";
       position: absolute;
       top: 20px;
-      width: 7px;
-      height: 7px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background: rgba(0,0,0,0.72);
+      background: rgba(0,0,0,0.7);
     }
 
     .fighter .head::before { left: 17px; }
@@ -240,104 +278,151 @@
     .fighter .hair {
       position: absolute;
       left: 50%;
-      top: -4px;
+      top: -5px;
+      width: 74px;
+      height: 24px;
       transform: translateX(-50%);
-      width: 68px;
-      height: 22px;
-      border-radius: 50% 50% 20% 20%;
-      background: rgba(35, 18, 18, 0.8);
+      border-radius: 50% 50% 22% 22%;
+      background: rgba(31, 19, 18, 0.8);
+    }
+
+    .fighter .body {
+      position: absolute;
+      left: 50%;
+      top: 58px;
+      width: 82px;
+      height: 92px;
+      transform: translateX(-50%);
+      border-radius: 28% 28% 18% 18% / 26% 26% 10% 10%;
+      background: linear-gradient(180deg, #ffeac4, #d8a06d 60%, #85563c);
+      box-shadow: inset -12px -10px 0 rgba(0,0,0,0.08);
     }
 
     .fighter .arm {
       position: absolute;
       width: 18px;
-      height: 82px;
-      top: 76px;
-      background: linear-gradient(180deg, #f7cf9a, #cc8966);
+      height: 86px;
+      top: 80px;
       border-radius: 20px;
+      background: linear-gradient(180deg, #f7d0a0, #cb8763);
       transform-origin: center top;
     }
 
-    .fighter .arm.left { left: 12px; transform: rotate(30deg); }
-    .fighter .arm.right { right: 12px; transform: rotate(-30deg); }
+    .fighter .arm.left { left: 24px; transform: rotate(28deg); }
+    .fighter .arm.right { right: 24px; transform: rotate(-26deg); }
 
     .fighter .leg {
       position: absolute;
-      width: 22px;
-      height: 96px;
-      background: linear-gradient(180deg, #e0bf8d, #af6e4d);
       bottom: 0;
+      width: 22px;
+      height: 100px;
       border-radius: 18px;
+      background: linear-gradient(180deg, #e9ccaf, #b87a57);
     }
 
-    .fighter .leg.left { left: 48px; }
-    .fighter .leg.right { right: 48px; }
+    .fighter .leg.left { left: 56px; }
+    .fighter .leg.right { right: 56px; }
 
-    .fighter.player .body { background: linear-gradient(180deg, #c1ebff, #5db0ff 60%, #2d5fc5); }
-    .fighter.player .head { background: linear-gradient(180deg, #f5d7a8, #d79d6a 70%, #9b5f42); }
-    .fighter.player .hair { background: rgba(18,42,74,0.82); }
-    .fighter.player .arm, .fighter.player .leg { background: linear-gradient(180deg, #d5ecff, #6bb5ff); }
+    .fighter.player .head,
+    .fighter.player .body,
+    .fighter.player .arm,
+    .fighter.player .leg {
+      background-image: linear-gradient(180deg, #cde9ff, #6bb9ff 60%, #2d5ec6);
+    }
 
-    .fighter.enemy .body { background: linear-gradient(180deg, #ffd2d1, #e46a6a 60%, #912d3c); }
-    .fighter.enemy .head { background: linear-gradient(180deg, #f7d8af, #d38862 70%, #924c3d); }
-    .fighter.enemy .hair { background: rgba(47, 12, 28, 0.78); }
-    .fighter.enemy .arm, .fighter.enemy .leg { background: linear-gradient(180deg, #ffd8cc, #d2786d); }
+    .fighter.player .head {
+      background: linear-gradient(180deg, #f4d7ad, #dc9367 70%, #a05c3d);
+    }
+
+    .fighter.player .hair { background: rgba(16, 40, 66, 0.85); }
+
+    .fighter.enemy .head,
+    .fighter.enemy .body,
+    .fighter.enemy .arm,
+    .fighter.enemy .leg {
+      background-image: linear-gradient(180deg, #ffd7d0, #e87373 60%, #931f3f);
+    }
+
+    .fighter.enemy .head {
+      background: linear-gradient(180deg, #f7d5ad, #d78662 70%, #914b38);
+    }
+
+    .fighter.enemy .hair { background: rgba(56, 18, 28, 0.8); }
 
     .fighter.hit {
-      animation: hit-flash 0.3s ease-out;
+      animation: hitFlash 0.3s ease-out;
     }
 
-    @keyframes hit-flash {
-      0% { filter: brightness(1); transform: translateX(var(--x)) scaleX(var(--scale)) translateY(0); }
-      25% { filter: brightness(1.7) saturate(1.4); transform: translateX(var(--x)) scaleX(var(--scale)) translateX(-10px) translateY(-4px); }
-      50% { filter: brightness(1); transform: translateX(var(--x)) scaleX(var(--scale)) translateX(8px); }
-      100% { filter: brightness(1); transform: translateX(var(--x)) scaleX(var(--scale)); }
+    @keyframes hitFlash {
+      0% { filter: brightness(1) saturate(1); }
+      25% { filter: brightness(1.8) saturate(1.4) sepia(0.1); }
+      50% { filter: brightness(1) saturate(1); transform: translateX(var(--tx)) scaleX(var(--scaleX)) translateX(-10px); }
+      100% { filter: brightness(1) saturate(1); transform: translateX(var(--tx)) scaleX(var(--scaleX)); }
     }
 
     .fighter.attack {
-      animation: attack-bump 0.18s ease-out;
+      animation: attackBump 0.18s ease-out;
     }
 
-    @keyframes attack-bump {
-      0% { transform: translateX(var(--x)) scaleX(var(--scale)) translateY(0); }
-      35% { transform: translateX(var(--x)) scaleX(var(--scale)) translateX(14px) translateY(-8px); }
-      100% { transform: translateX(var(--x)) scaleX(var(--scale)); }
+    @keyframes attackBump {
+      0% { transform: translateX(var(--tx)) scaleX(var(--scaleX)) translateY(0); }
+      35% { transform: translateX(var(--tx)) scaleX(var(--scaleX)) translateX(16px) translateY(-8px); }
+      100% { transform: translateX(var(--tx)) scaleX(var(--scaleX)); }
     }
 
-    .effect {
+    .impact {
       position: absolute;
-      width: 110px;
-      height: 110px;
-      pointer-events: none;
-      z-index: 12;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      z-index: 15;
       opacity: 0;
       transform: translate(-50%, -50%);
-      filter: drop-shadow(0 0 12px rgba(255,255,255,0.85));
+      pointer-events: none;
     }
 
-    .effect.show {
-      animation: pop 0.38s ease-out forwards;
+    .impact.show {
+      animation: impactBurst 0.42s ease-out forwards;
     }
 
-    @keyframes pop {
+    @keyframes impactBurst {
       0% { opacity: 0; transform: translate(-50%, -50%) scale(0.2); }
+      25% { opacity: 1; }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(1.3); }
+    }
+
+    .impact.punch {
+      background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,226,128,0.9) 16%, rgba(255,140,72,0.72) 38%, transparent 72%);
+    }
+
+    .impact.kick {
+      background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(133,228,255,0.9) 16%, rgba(38,132,255,0.68) 40%, transparent 72%);
+    }
+
+    .impact.special {
+      background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,166,214,0.9) 16%, rgba(188,88,255,0.7) 40%, transparent 72%);
+    }
+
+    .swoosh {
+      position: absolute;
+      width: 220px;
+      height: 110px;
+      border-radius: 50%;
+      border: 4px solid rgba(255,255,255,0.28);
+      transform: translate(-50%, -50%) rotate(-8deg);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 14;
+    }
+
+    .swoosh.show {
+      animation: swooshRise 0.28s ease-out forwards;
+    }
+
+    @keyframes swooshRise {
+      0% { opacity: 0; transform: translate(-50%, -50%) rotate(-8deg) scale(0.2); }
       30% { opacity: 1; }
-      100% { opacity: 0; transform: translate(-50%, -50%) scale(1.25); }
-    }
-
-    .effect.punch {
-      background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,191,77,0.9) 20%, rgba(255,111,61,0.8) 45%, transparent 70%);
-      border-radius: 50%;
-    }
-
-    .effect.kick {
-      background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(124,203,255,0.9) 18%, rgba(43,129,255,0.75) 42%, transparent 72%);
-      border-radius: 50%;
-    }
-
-    .effect.special {
-      background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,110,175,0.85) 18%, rgba(164,72,255,0.72) 45%, transparent 72%);
-      border-radius: 50%;
+      100% { opacity: 0; transform: translate(-50%, -50%) rotate(-8deg) scale(1.1); }
     }
 
     .controls {
@@ -347,49 +432,54 @@
       transform: translateX(-50%);
       z-index: 25;
       display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
       justify-content: center;
-      width: min(650px, 90%);
+      flex-wrap: wrap;
+      gap: 12px;
+      width: min(700px, 90%);
     }
 
     button {
       appearance: none;
       border: none;
-      background: linear-gradient(180deg, #f9d36d, #ec8d2d 60%, #ce5f1a);
-      color: #180d0d;
-      font-weight: 900;
-      letter-spacing: 1px;
-      padding: 12px 18px;
-      border-radius: 12px;
-      box-shadow:
-        0 8px 0 rgba(110, 47, 0, 0.85),
-        0 12px 20px rgba(0,0,0,0.25);
       cursor: pointer;
-      transition: transform 0.08s ease, box-shadow 0.08s ease;
-      min-width: 130px;
+      outline: none;
+      color: #170a11;
+      background: linear-gradient(180deg, #ffe58e, #f7b03b 62%, #d87720);
+      border-radius: 12px;
+      padding: 12px 18px;
+      min-width: 140px;
+      font-weight: 900;
+      letter-spacing: 1.2px;
       text-transform: uppercase;
+      box-shadow:
+        0 8px 0 rgba(122, 53, 0, 0.86),
+        0 14px 22px rgba(0,0,0,0.26);
+      transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.2s ease;
     }
 
     button:active {
       transform: translateY(4px);
       box-shadow:
-        0 4px 0 rgba(110, 47, 0, 0.85),
-        0 8px 18px rgba(0,0,0,0.25);
+        0 4px 0 rgba(122, 53, 0, 0.86),
+        0 8px 18px rgba(0,0,0,0.24);
     }
 
     button.alt {
-      background: linear-gradient(180deg, #8bf3ff, #3dc5ff 60%, #1d80d8);
+      background: linear-gradient(180deg, #9beeff, #42c8ff 60%, #1f81d9);
       box-shadow:
-        0 8px 0 rgba(13, 70, 117, 0.82),
-        0 12px 20px rgba(0,0,0,0.25);
+        0 8px 0 rgba(13, 70, 116, 0.8),
+        0 14px 22px rgba(0,0,0,0.26);
     }
 
     button.warn {
-      background: linear-gradient(180deg, #ffb4d8, #ff5eb3 60%, #cb2d8f);
+      background: linear-gradient(180deg, #ffd1eb, #ff68bf 60%, #d2409e);
       box-shadow:
-        0 8px 0 rgba(116, 18, 83, 0.8),
-        0 12px 20px rgba(0,0,0,0.25);
+        0 8px 0 rgba(110, 23, 85, 0.8),
+        0 14px 22px rgba(0,0,0,0.26);
+    }
+
+    button:focus-visible {
+      filter: brightness(1.05);
     }
 
     .message {
@@ -398,9 +488,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 30;
-      background: rgba(9, 7, 18, 0.42);
-      text-align: center;
+      z-index: 35;
+      background: rgba(10, 7, 18, 0.34);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.2s ease;
@@ -412,24 +501,27 @@
     }
 
     .message-card {
-      background: rgba(22, 15, 34, 0.9);
-      border: 2px solid rgba(255,255,255,0.12);
+      background: rgba(20, 13, 31, 0.92);
+      border: 2px solid rgba(255,255,255,0.14);
       border-radius: 18px;
-      padding: 26px 28px;
-      box-shadow: 0 0 32px rgba(0,0,0,0.5);
+      padding: 24px 30px;
+      text-align: center;
+      box-shadow: 0 0 28px rgba(0,0,0,0.5);
+      max-width: 520px;
     }
 
     .message-card h2 {
-      margin: 0 0 10px 0;
-      font-size: clamp(24px, 3vw, 42px);
-      text-transform: uppercase;
+      margin: 0 0 8px 0;
+      font-size: clamp(28px, 3vw, 44px);
       letter-spacing: 1px;
+      text-transform: uppercase;
     }
 
     .message-card p {
       margin: 0 0 18px 0;
+      color: rgba(255,255,255,0.8);
       font-size: 16px;
-      color: rgba(255,255,255,0.76);
+      line-height: 1.45;
     }
 
     .message-card button {
@@ -437,15 +529,29 @@
     }
 
     @media (max-width: 760px) {
-      .game-shell { width: 96vw; height: 86vh; }
-      .fighter-info { width: 46%; }
-      .controls { gap: 8px; }
-      button { min-width: 100px; padding: 10px 12px; }
+      .game-shell {
+        width: 96vw;
+        height: 88vh;
+      }
+
+      .fighter-info {
+        width: 42%;
+      }
+
+      .controls {
+        width: 92%;
+        gap: 6px;
+      }
+
+      button {
+        min-width: 110px;
+        padding: 10px 12px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="game-shell">
+  <div class="game-shell" id="gameShell">
     <div class="hud">
       <div class="fighter-info player">
         <div class="label-row">
@@ -468,7 +574,11 @@
       </div>
     </div>
 
+    <div class="round-tag" id="roundTag">Round 1</div>
+
     <div class="arena" id="arena">
+      <div class="sun-glow"></div>
+
       <div class="fighter player" id="player">
         <div class="shadow"></div>
         <div class="head"></div>
@@ -491,8 +601,10 @@
         <div class="leg right"></div>
       </div>
 
-      <div class="effect punch" id="playerEffect"></div>
-      <div class="effect punch" id="enemyEffect"></div>
+      <div class="impact punch" id="playerImpact"></div>
+      <div class="impact punch" id="enemyImpact"></div>
+      <div class="swoosh" id="playerSwoosh"></div>
+      <div class="swoosh" id="enemySwoosh"></div>
 
       <div class="floor"></div>
     </div>
@@ -500,14 +612,14 @@
     <div class="controls">
       <button id="punchBtn">Ütés</button>
       <button id="kickBtn" class="alt">Rúgás</button>
-      <button id="specialBtn" class="warn">Különleges</button>
+      <button id="specialBtn" class="warn">Fatality</button>
     </div>
 
     <div class="message" id="message">
       <div class="message-card">
         <h2 id="messageTitle">Győzelem!</h2>
-        <p id="messageText">Az anyós megadta magát.</p>
-        <button id="restartBtn">Új kör</button>
+        <p id="messageText">A családi béke helyreállt.</p>
+        <button id="restartBtn">Új mérkőzés</button>
       </div>
     </div>
   </div>
@@ -517,11 +629,15 @@
     const enemy = document.getElementById('enemy');
     const playerHealthBar = document.getElementById('playerHealth');
     const enemyHealthBar = document.getElementById('enemyHealth');
+    const playerImpact = document.getElementById('playerImpact');
+    const enemyImpact = document.getElementById('enemyImpact');
+    const playerSwoosh = document.getElementById('playerSwoosh');
+    const enemySwoosh = document.getElementById('enemySwoosh');
     const messageBox = document.getElementById('message');
     const messageTitle = document.getElementById('messageTitle');
     const messageText = document.getElementById('messageText');
-    const playerEffect = document.getElementById('playerEffect');
-    const enemyEffect = document.getElementById('enemyEffect');
+    const gameShell = document.getElementById('gameShell');
+    const roundTag = document.getElementById('roundTag');
 
     const punchBtn = document.getElementById('punchBtn');
     const kickBtn = document.getElementById('kickBtn');
@@ -531,74 +647,132 @@
     const state = {
       playerHP: 100,
       enemyHP: 100,
+      round: 1,
       gameOver: false,
-      aiTimer: null
+      aiLocked: false
     };
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playTone(freq, duration, type = 'square', volume = 0.05) {
+      const oscillator = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      oscillator.type = type;
+      oscillator.frequency.value = freq;
+      gain.gain.value = volume;
+      oscillator.connect(gain);
+      gain.connect(audioCtx.destination);
+      oscillator.start();
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+      oscillator.stop(audioCtx.currentTime + duration);
+    }
 
     function clamp(value, min, max) {
       return Math.min(Math.max(value, min), max);
     }
 
-    function setBarHealth(element, value) {
-      element.style.width = value + '%';
+    function setHealth(el, value) {
+      el.style.width = value + '%';
     }
 
-    function triggerAttackAnimation(fighter) {
+    function shakeArena() {
+      gameShell.classList.remove('shake');
+      void gameShell.offsetWidth;
+      gameShell.classList.add('shake');
+    }
+
+    function animateImpact(target, type) {
+      target.className = 'impact show ' + type;
+      target.style.left = '50%';
+      target.style.top = '50%';
+      setTimeout(() => {
+        target.className = 'impact ' + type;
+      }, 420);
+    }
+
+    function animateSwoosh(target, left, top) {
+      target.style.left = left + '%';
+      target.style.top = top + '%';
+      target.classList.remove('show');
+      void target.offsetWidth;
+      target.classList.add('show');
+      setTimeout(() => target.classList.remove('show'), 280);
+    }
+
+    function animateAttack(fighter) {
       fighter.classList.remove('attack');
       void fighter.offsetWidth;
       fighter.classList.add('attack');
       setTimeout(() => fighter.classList.remove('attack'), 180);
     }
 
-    function triggerHitAnimation(fighter) {
+    function animateHit(fighter) {
       fighter.classList.remove('hit');
       void fighter.offsetWidth;
       fighter.classList.add('hit');
       setTimeout(() => fighter.classList.remove('hit'), 300);
     }
 
-    function applyDamage(target, amount) {
+    function damageTarget(target, amount, attacker) {
+      const isPlayer = attacker === 'player';
+
       if (target === 'player') {
         state.playerHP = clamp(state.playerHP - amount, 0, 100);
-        setBarHealth(playerHealthBar, state.playerHP);
-        triggerHitAnimation(player);
-
-        if (state.playerHP <= 0) {
-          finishGame(false, 'Az anyós túlságosan erős volt…');
-        }
+        setHealth(playerHealthBar, state.playerHP);
+        animateHit(player);
+        shakeArena();
+        playTone(120, 0.12, 'sawtooth', 0.07);
       } else {
         state.enemyHP = clamp(state.enemyHP - amount, 0, 100);
-        setBarHealth(enemyHealthBar, state.enemyHP);
-        triggerHitAnimation(enemy);
+        setHealth(enemyHealthBar, state.enemyHP);
+        animateHit(enemy);
+        shakeArena();
+        playTone(210, 0.14, 'square', 0.06);
+      }
 
-        if (state.enemyHP <= 0) {
-          finishGame(true, 'Gratulálok! Az anyós megadta magát.');
-        }
+      if (state.playerHP <= 0) {
+        finishGame(false, 'A mérkőzés véget ért. Az anyós túl erős volt, de a család tovább él…');
+      }
+
+      if (state.enemyHP <= 0) {
+        finishGame(true, 'Kikaptál az anyóstól — de legalább a házban most mindenki csendben nézi a TV-t.');
       }
     }
 
-    function playerAttack(kind) {
-      if (state.gameOver) return;
+    function playerAttack(type) {
+      if (state.gameOver || state.aiLocked) return;
 
       let damage = 8;
-      let effectClass = 'punch';
+      let effectType = 'punch';
+      let swingX = 24;
 
-      if (kind === 'kick') {
-        damage = 14;
-        effectClass = 'kick';
-      } else if (kind === 'special') {
-        damage = 26;
-        effectClass = 'special';
+      if (type === 'kick') { damage = 14; effectType = 'kick'; swingX = 28; }
+      if (type === 'special') { damage = 26; effectType = 'special'; swingX = 34; }
+
+      state.aiLocked = true;
+      animateAttack(player);
+      animateSwoosh(playerSwoosh, 48, 52);
+      animateImpact(playerImpact, effectType);
+      playerImpact.style.left = '62%';
+      playerImpact.style.top = '54%';
+      playTone(type === 'special' ? 330 : 220, 0.12, 'triangle', type === 'special' ? 0.08 : 0.06);
+
+      const blockRoll = Math.random();
+      const blocked = type !== 'special' && blockRoll > 0.8;
+      const finalDamage = blocked ? Math.ceil(damage * 0.35) : damage;
+
+      if (!blocked) {
+        damageTarget('enemy', finalDamage, 'player');
+      } else {
+        animateHit(enemy);
+        playTone(140, 0.09, 'sine', 0.03);
       }
 
-      triggerAttackAnimation(player);
-      playerEffect.className = 'effect show ' + effectClass;
-      setTimeout(() => playerEffect.className = 'effect ' + effectClass, 350);
-
-      applyDamage('enemy', damage);
-
       if (!state.gameOver) {
-        window.setTimeout(enemyAiTurn, 500);
+        setTimeout(() => {
+          state.aiLocked = false;
+          if (!state.gameOver) enemyAiTurn();
+        }, 420);
       }
     }
 
@@ -606,23 +780,36 @@
       if (state.gameOver) return;
 
       const moveRoll = Math.random();
+      let type = 'punch';
       let damage = 8;
-      let effectClass = 'punch';
 
-      if (moveRoll > 0.66) {
-        damage = 15;
-        effectClass = 'kick';
+      if (moveRoll > 0.7) {
+        type = 'kick';
+        damage = 14;
       }
       if (moveRoll > 0.9) {
+        type = 'special';
         damage = 24;
-        effectClass = 'special';
       }
 
-      triggerAttackAnimation(enemy);
-      enemyEffect.className = 'effect show ' + effectClass;
-      setTimeout(() => enemyEffect.className = 'effect ' + effectClass, 350);
+      animateAttack(enemy);
+      animateSwoosh(enemySwoosh, 58, 52);
+      animateImpact(enemyImpact, type);
+      enemyImpact.style.left = '38%';
+      enemyImpact.style.top = '54%';
 
-      applyDamage('player', damage);
+      const blockChance = Math.random();
+      const blocked = blockChance > 0.82;
+      const finalDamage = blocked ? Math.ceil(damage * 0.4) : damage;
+
+      if (!blocked) {
+        damageTarget('player', finalDamage, 'enemy');
+      } else {
+        animateHit(player);
+        playTone(170, 0.08, 'sine', 0.03);
+      }
+
+      playTone(type === 'special' ? 300 : 180, 0.12, 'sawtooth', type === 'special' ? 0.08 : 0.05);
     }
 
     function finishGame(playerWon, text) {
@@ -630,15 +817,24 @@
       messageTitle.textContent = playerWon ? 'Győzelem!' : 'Vereség!';
       messageText.textContent = text;
       messageBox.classList.add('show');
+      if (playerWon) {
+        playTone(520, 0.18, 'triangle', 0.08);
+        setTimeout(() => playTone(660, 0.18, 'triangle', 0.08), 120);
+      } else {
+        playTone(220, 0.18, 'sawtooth', 0.07);
+      }
     }
 
     function resetGame() {
       state.playerHP = 100;
       state.enemyHP = 100;
+      state.round = 1;
       state.gameOver = false;
-      setBarHealth(playerHealthBar, 100);
-      setBarHealth(enemyHealthBar, 100);
+      state.aiLocked = false;
+      setHealth(playerHealthBar, 100);
+      setHealth(enemyHealthBar, 100);
       messageBox.classList.remove('show');
+      roundTag.textContent = 'Round 1';
     }
 
     punchBtn.addEventListener('click', () => playerAttack('punch'));
