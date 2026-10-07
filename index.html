@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anyós: Fatal Rúgás</title>
+  <title>Anyós: Fatality</title>
   <style>
     :root {
-      --bg-1: #0d0a16;
-      --bg-2: #180f26;
-      --bg-3: #2d173a;
-      --panel: rgba(19, 14, 32, 0.88);
-      --cyan: #74ebff;
-      --cyan-2: #2bc6ff;
-      --red: #ff546d;
-      --red-2: #d92746;
-      --gold: #ffdb6b;
-      --orange: #ff8e40;
-      --green: #6ef7a1;
-      --white: #f4f7ff;
+      --bg1: #0b0814;
+      --bg2: #1d1123;
+      --bg3: #341d3d;
+      --hud: rgba(17, 12, 28, 0.88);
+      --cyan: #82ecff;
+      --cyan2: #2cc0ff;
+      --red: #ff5d73;
+      --red2: #d7264a;
+      --gold: #ffd770;
+      --gold2: #ff9f3f;
+      --violet: #b978ff;
+      --text: #f7f7ff;
       --shadow: rgba(0,0,0,0.55);
     }
 
@@ -27,12 +27,10 @@
       margin: 0;
       width: 100%;
       height: 100%;
-      background:
-        radial-gradient(circle at center, rgba(93,77,178,0.28), transparent 32%),
-        linear-gradient(180deg, var(--bg-2), var(--bg-1));
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      color: var(--white);
       overflow: hidden;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(180deg, var(--bg2), var(--bg1));
+      color: var(--text);
     }
 
     body {
@@ -42,26 +40,26 @@
 
     .game-shell {
       position: relative;
-      width: min(1120px, 96vw);
-      height: min(720px, 88vh);
-      border-radius: 18px;
+      width: min(1180px, 96vw);
+      height: min(760px, 90vh);
+      border-radius: 24px;
       overflow: hidden;
-      background: rgba(18, 12, 26, 0.96);
       border: 2px solid rgba(255,255,255,0.12);
+      background: rgba(18, 12, 28, 0.96);
       box-shadow:
-        0 0 0 2px rgba(120, 235, 255, 0.08),
-        0 25px 90px rgba(0,0,0,0.62),
-        inset 0 0 40px rgba(255,255,255,0.02);
+        0 0 0 2px rgba(129, 234, 255, 0.08),
+        0 28px 90px rgba(0,0,0,0.62),
+        inset 0 0 24px rgba(255,255,255,0.03);
     }
 
     .game-shell.shake {
-      animation: shake 0.22s linear 2;
+      animation: shake 0.18s linear 2;
     }
 
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-6px); }
-      50% { transform: translateX(6px); }
+      25% { transform: translateX(-7px); }
+      50% { transform: translateX(7px); }
       75% { transform: translateX(-4px); }
     }
 
@@ -69,17 +67,16 @@
       position: absolute;
       left: 18px;
       right: 18px;
-      top: 16px;
-      z-index: 20;
+      top: 18px;
+      z-index: 25;
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 18px;
       pointer-events: none;
     }
 
     .fighter-info {
-      width: min(38%, 400px);
+      width: 40%;
       display: flex;
       flex-direction: column;
       gap: 7px;
@@ -92,25 +89,25 @@
     .label-row {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       font-size: 12px;
       letter-spacing: 2px;
-      text-transform: uppercase;
       font-weight: 900;
-      color: rgba(255,255,255,0.85);
-      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.9);
+      text-shadow: 0 4px 12px rgba(0,0,0,0.7);
     }
 
-    .label-row .dot {
-      width: 10px;
-      height: 10px;
+    .dot {
+      width: 11px;
+      height: 11px;
       border-radius: 50%;
       display: inline-block;
-      box-shadow: 0 0 18px currentColor;
+      box-shadow: 0 0 14px currentColor;
     }
 
-    .player .dot { color: var(--cyan); background: var(--cyan); }
-    .enemy .dot { color: var(--red); background: var(--red); }
+    .player .dot { background: var(--cyan); color: var(--cyan); }
+    .enemy .dot { background: var(--red); color: var(--red); }
 
     .health-bar {
       position: relative;
@@ -118,9 +115,9 @@
       height: 24px;
       border-radius: 12px;
       overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.12);
       background: rgba(255,255,255,0.08);
-      box-shadow: inset 0 0 18px rgba(0,0,0,0.4);
+      box-shadow: inset 0 0 18px rgba(0,0,0,0.42);
     }
 
     .health-fill {
@@ -128,34 +125,17 @@
       inset: 0 auto 0 0;
       width: 100%;
       border-radius: 12px;
-      transition: width 0.25s ease, filter 0.25s ease;
-      box-shadow: inset 0 0 12px rgba(255,255,255,0.28);
+      transition: width 0.2s ease;
     }
 
     .player .health-fill {
-      background: linear-gradient(90deg, #95f7ff 0%, #62d8ff 40%, #3cc1ff 100%);
+      background: linear-gradient(90deg, #91edff, #4dcafc 45%, #1f90e8 100%);
+      box-shadow: inset 0 0 12px rgba(255,255,255,0.2);
     }
 
     .enemy .health-fill {
-      background: linear-gradient(90deg, #ff9a88 0%, #ff5c63 42%, #c2264a 100%);
-    }
-
-    .round-tag {
-      position: absolute;
-      top: 58px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 18;
-      font-weight: 900;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.8);
-      background: rgba(9, 8, 20, 0.5);
-      border: 1px solid rgba(255,255,255,0.16);
-      border-radius: 999px;
-      padding: 6px 16px;
-      font-size: 11px;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.3);
+      background: linear-gradient(90deg, #ffa2a6, #ff566a 45%, #d3244d 100%);
+      box-shadow: inset 0 0 12px rgba(255,255,255,0.18);
     }
 
     .arena {
@@ -163,9 +143,8 @@
       width: 100%;
       height: 100%;
       background:
-        linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.08)),
-        radial-gradient(circle at 50% 18%, rgba(79,91,184,0.35), transparent 23%),
-        linear-gradient(180deg, #18162b 0%, #3d1f3f 28%, #2a1e2f 100%);
+        radial-gradient(circle at 50% 18%, rgba(130, 120, 255, 0.28), transparent 20%),
+        linear-gradient(180deg, #151425 0%, #391b45 32%, #2a1a2d 100%);
       overflow: hidden;
     }
 
@@ -173,25 +152,37 @@
       content: "";
       position: absolute;
       inset: 0;
-      background:
-        repeating-linear-gradient(
-          90deg,
-          rgba(255,255,255,0.02) 0, rgba(255,255,255,0.02) 1px,
-          transparent 1px, transparent 32px
-        );
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(255,255,255,0.025) 0,
+        rgba(255,255,255,0.025) 1px,
+        transparent 1px,
+        transparent 28px
+      );
       opacity: 0.8;
     }
 
     .sun-glow {
       position: absolute;
       left: 50%;
-      top: 10%;
+      top: 12%;
       transform: translateX(-50%);
-      width: 450px;
-      height: 310px;
+      width: 420px;
+      height: 300px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,255,255,0.22), rgba(101,129,255,0.14), transparent 66%);
+      background: radial-gradient(circle, rgba(255,255,255,0.25), rgba(126,110,255,0.16), transparent 68%);
       filter: blur(18px);
+    }
+
+    .spotlight {
+      position: absolute;
+      left: 50%;
+      top: 28%;
+      transform: translateX(-50%);
+      width: 620px;
+      height: 260px;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.08), rgba(255,255,255,0.02), transparent 64%);
+      filter: blur(16px);
     }
 
     .floor {
@@ -199,33 +190,33 @@
       left: 0;
       right: 0;
       bottom: 0;
-      height: 120px;
+      height: 140px;
       background:
-        linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.2)),
-        linear-gradient(90deg, #2b2433, #1e1a29 30%, #362b3c 100%);
+        linear-gradient(180deg, rgba(0, 0, 0, 0.0), rgba(0,0,0,0.22)),
+        linear-gradient(90deg, #2a2430, #1f1b2d 36%, #2d263a 100%);
       border-top: 4px solid rgba(255,255,255,0.08);
-      box-shadow: inset 0 10px 18px rgba(255,255,255,0.05);
+      box-shadow: inset 0 10px 18px rgba(255,255,255,0.04);
     }
 
     .floor::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0 2px, transparent 2px 22px);
+      background: repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0 2px, transparent 2px 18px);
       opacity: 0.12;
     }
 
     .fighter {
       --tx: 0px;
-      --scaleX: 1;
+      --scale: 1;
       position: absolute;
       bottom: 108px;
-      width: 170px;
-      height: 246px;
-      transform: translateX(var(--tx)) scaleX(var(--scaleX));
+      width: 180px;
+      height: 260px;
+      transform: translateX(var(--tx)) scaleX(var(--scale));
       transition: transform 0.12s ease-out, filter 0.12s ease;
       z-index: 10;
-      filter: drop-shadow(0 24px 18px rgba(0,0,0,0.28));
+      filter: drop-shadow(0 18px 18px rgba(0,0,0,0.25));
     }
 
     .fighter.player {
@@ -233,8 +224,8 @@
     }
 
     .fighter.enemy {
-      left: 72%;
-      --scaleX: -1;
+      left: 74%;
+      --scale: -1;
     }
 
     .fighter .shadow {
@@ -244,8 +235,8 @@
       width: 110px;
       height: 22px;
       transform: translateX(-50%);
-      background: rgba(0,0,0,0.34);
       border-radius: 50%;
+      background: rgba(0, 0, 0, 0.34);
       filter: blur(3px);
     }
 
@@ -254,22 +245,22 @@
       left: 50%;
       top: 0;
       width: 64px;
-      height: 70px;
+      height: 72px;
       transform: translateX(-50%);
       border-radius: 48% 48% 46% 46%;
-      background: linear-gradient(180deg, #f6d7ae, #d18f62 68%, #9d5f46);
-      box-shadow: inset -8px -8px 0 rgba(0,0,0,0.06);
+      background: linear-gradient(180deg, #f7dcb2, #d89966 70%, #9c5b3f);
+      box-shadow: inset -10px -8px 0 rgba(0,0,0,0.05);
     }
 
     .fighter .head::before,
     .fighter .head::after {
       content: "";
       position: absolute;
-      top: 20px;
+      top: 22px;
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.78);
     }
 
     .fighter .head::before { left: 17px; }
@@ -278,76 +269,74 @@
     .fighter .hair {
       position: absolute;
       left: 50%;
-      top: -5px;
+      top: -6px;
       width: 74px;
-      height: 24px;
+      height: 26px;
       transform: translateX(-50%);
-      border-radius: 50% 50% 22% 22%;
-      background: rgba(31, 19, 18, 0.8);
+      border-radius: 50% 50% 24% 24%;
+      background: rgba(18, 10, 11, 0.82);
     }
 
     .fighter .body {
       position: absolute;
       left: 50%;
       top: 58px;
-      width: 82px;
-      height: 92px;
+      width: 86px;
+      height: 94px;
       transform: translateX(-50%);
-      border-radius: 28% 28% 18% 18% / 26% 26% 10% 10%;
-      background: linear-gradient(180deg, #ffeac4, #d8a06d 60%, #85563c);
-      box-shadow: inset -12px -10px 0 rgba(0,0,0,0.08);
+      border-radius: 30% 30% 16% 16% / 22% 22% 12% 12%;
+      background: linear-gradient(180deg, #ffe9c9, #d29d69 58%, #84563a);
+      box-shadow: inset -12px -10px 0 rgba(0,0,0,0.06);
     }
 
     .fighter .arm {
       position: absolute;
       width: 18px;
-      height: 86px;
-      top: 80px;
+      height: 88px;
+      top: 82px;
       border-radius: 20px;
-      background: linear-gradient(180deg, #f7d0a0, #cb8763);
+      background: linear-gradient(180deg, #f7d2a4, #d18862);
       transform-origin: center top;
     }
 
-    .fighter .arm.left { left: 24px; transform: rotate(28deg); }
-    .fighter .arm.right { right: 24px; transform: rotate(-26deg); }
+    .fighter .arm.left { left: 24px; transform: rotate(30deg); }
+    .fighter .arm.right { right: 24px; transform: rotate(-28deg); }
 
     .fighter .leg {
       position: absolute;
       bottom: 0;
       width: 22px;
-      height: 100px;
+      height: 104px;
       border-radius: 18px;
-      background: linear-gradient(180deg, #e9ccaf, #b87a57);
+      background: linear-gradient(180deg, #ebc7a1, #b77b5d);
     }
 
-    .fighter .leg.left { left: 56px; }
-    .fighter .leg.right { right: 56px; }
+    .fighter .leg.left { left: 58px; }
+    .fighter .leg.right { right: 58px; }
 
-    .fighter.player .head,
+    .fighter.player .head {
+      background: linear-gradient(180deg, #f4d7b0, #dc9468 70%, #a25d40);
+    }
+
+    .fighter.player .hair { background: rgba(19, 30, 58, 0.84); }
+
     .fighter.player .body,
     .fighter.player .arm,
     .fighter.player .leg {
-      background-image: linear-gradient(180deg, #cde9ff, #6bb9ff 60%, #2d5ec6);
-    }
-
-    .fighter.player .head {
-      background: linear-gradient(180deg, #f4d7ad, #dc9367 70%, #a05c3d);
-    }
-
-    .fighter.player .hair { background: rgba(16, 40, 66, 0.85); }
-
-    .fighter.enemy .head,
-    .fighter.enemy .body,
-    .fighter.enemy .arm,
-    .fighter.enemy .leg {
-      background-image: linear-gradient(180deg, #ffd7d0, #e87373 60%, #931f3f);
+      background: linear-gradient(180deg, #d2ebff, #72bfff 60%, #2d5cc7);
     }
 
     .fighter.enemy .head {
-      background: linear-gradient(180deg, #f7d5ad, #d78662 70%, #914b38);
+      background: linear-gradient(180deg, #f8d7b1, #d98b62 70%, #954a38);
     }
 
-    .fighter.enemy .hair { background: rgba(56, 18, 28, 0.8); }
+    .fighter.enemy .hair { background: rgba(43, 15, 28, 0.8); }
+
+    .fighter.enemy .body,
+    .fighter.enemy .arm,
+    .fighter.enemy .leg {
+      background: linear-gradient(180deg, #ffd7d4, #e96b71 60%, #8c2140);
+    }
 
     .fighter.hit {
       animation: hitFlash 0.3s ease-out;
@@ -355,9 +344,9 @@
 
     @keyframes hitFlash {
       0% { filter: brightness(1) saturate(1); }
-      25% { filter: brightness(1.8) saturate(1.4) sepia(0.1); }
-      50% { filter: brightness(1) saturate(1); transform: translateX(var(--tx)) scaleX(var(--scaleX)) translateX(-10px); }
-      100% { filter: brightness(1) saturate(1); transform: translateX(var(--tx)) scaleX(var(--scaleX)); }
+      25% { filter: brightness(1.75) saturate(1.4); }
+      50% { filter: brightness(1) saturate(1); transform: translateX(var(--tx)) scaleX(var(--scale)) translateX(-10px); }
+      100% { filter: brightness(1) saturate(1); transform: translateX(var(--tx)) scaleX(var(--scale)); }
     }
 
     .fighter.attack {
@@ -365,9 +354,9 @@
     }
 
     @keyframes attackBump {
-      0% { transform: translateX(var(--tx)) scaleX(var(--scaleX)) translateY(0); }
-      35% { transform: translateX(var(--tx)) scaleX(var(--scaleX)) translateX(16px) translateY(-8px); }
-      100% { transform: translateX(var(--tx)) scaleX(var(--scaleX)); }
+      0% { transform: translateX(var(--tx)) scaleX(var(--scale)) translateY(0); }
+      35% { transform: translateX(var(--tx)) scaleX(var(--scale)) translateX(14px) translateY(-8px); }
+      100% { transform: translateX(var(--tx)) scaleX(var(--scale)); }
     }
 
     .impact {
@@ -377,52 +366,98 @@
       border-radius: 50%;
       z-index: 15;
       opacity: 0;
-      transform: translate(-50%, -50%);
       pointer-events: none;
+      transform: translate(-50%, -50%);
     }
 
     .impact.show {
-      animation: impactBurst 0.42s ease-out forwards;
+      animation: burst 0.42s ease-out forwards;
     }
 
-    @keyframes impactBurst {
+    @keyframes burst {
       0% { opacity: 0; transform: translate(-50%, -50%) scale(0.2); }
-      25% { opacity: 1; }
+      30% { opacity: 1; }
       100% { opacity: 0; transform: translate(-50%, -50%) scale(1.3); }
     }
 
     .impact.punch {
-      background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,226,128,0.9) 16%, rgba(255,140,72,0.72) 38%, transparent 72%);
+      background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,224,129,0.9) 18%, rgba(255,137,72,0.7) 42%, transparent 72%);
     }
 
     .impact.kick {
-      background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(133,228,255,0.9) 16%, rgba(38,132,255,0.68) 40%, transparent 72%);
+      background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(122,224,255,0.9) 18%, rgba(42,126,255,0.7) 42%, transparent 72%);
     }
 
     .impact.special {
-      background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,166,214,0.9) 16%, rgba(188,88,255,0.7) 40%, transparent 72%);
+      background: radial-gradient(circle, rgba(255,255,255,0.96) 0%, rgba(255,194,229,0.9) 18%, rgba(191,92,255,0.72) 42%, transparent 72%);
     }
 
     .swoosh {
       position: absolute;
       width: 220px;
       height: 110px;
+      border: 4px solid rgba(255,255,255,0.26);
       border-radius: 50%;
-      border: 4px solid rgba(255,255,255,0.28);
-      transform: translate(-50%, -50%) rotate(-8deg);
+      transform: translate(-50%, -50%) rotate(-9deg);
       opacity: 0;
-      pointer-events: none;
       z-index: 14;
+      pointer-events: none;
     }
 
     .swoosh.show {
-      animation: swooshRise 0.28s ease-out forwards;
+      animation: swoosh 0.28s ease-out forwards;
     }
 
-    @keyframes swooshRise {
-      0% { opacity: 0; transform: translate(-50%, -50%) rotate(-8deg) scale(0.2); }
+    @keyframes swoosh {
+      0% { opacity: 0; transform: translate(-50%, -50%) rotate(-9deg) scale(0.2); }
       30% { opacity: 1; }
-      100% { opacity: 0; transform: translate(-50%, -50%) rotate(-8deg) scale(1.1); }
+      100% { opacity: 0; transform: translate(-50%, -50%) rotate(-9deg) scale(1.12); }
+    }
+
+    .finish-message {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 40;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      background: rgba(9, 7, 16, 0.38);
+    }
+
+    .finish-message.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .finish-card {
+      background: rgba(18, 12, 30, 0.92);
+      border: 2px solid rgba(255,255,255,0.14);
+      border-radius: 18px;
+      padding: 24px 28px;
+      text-align: center;
+      box-shadow: 0 0 32px rgba(0,0,0,0.48);
+      max-width: 500px;
+    }
+
+    .finish-card h2 {
+      margin: 0 0 10px 0;
+      font-size: clamp(26px, 3vw, 42px);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .finish-card p {
+      margin: 0 0 18px 0;
+      color: rgba(255,255,255,0.8);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .finish-card button {
+      min-width: 180px;
     }
 
     .controls {
@@ -430,12 +465,12 @@
       left: 50%;
       bottom: 18px;
       transform: translateX(-50%);
-      z-index: 25;
+      z-index: 30;
       display: flex;
+      gap: 12px;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 12px;
-      width: min(700px, 90%);
+      width: min(760px, 90%);
     }
 
     button {
@@ -443,110 +478,46 @@
       border: none;
       cursor: pointer;
       outline: none;
-      color: #170a11;
-      background: linear-gradient(180deg, #ffe58e, #f7b03b 62%, #d87720);
+      color: #180b0d;
+      background: linear-gradient(180deg, #ffe595, #f7b744 62%, #d97b25);
       border-radius: 12px;
       padding: 12px 18px;
-      min-width: 140px;
+      min-width: 138px;
       font-weight: 900;
       letter-spacing: 1.2px;
       text-transform: uppercase;
       box-shadow:
-        0 8px 0 rgba(122, 53, 0, 0.86),
-        0 14px 22px rgba(0,0,0,0.26);
-      transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.2s ease;
+        0 8px 0 rgba(125, 61, 0, 0.84),
+        0 14px 20px rgba(0,0,0,0.22);
+      transition: transform 0.08s ease, box-shadow 0.08s ease;
     }
 
     button:active {
       transform: translateY(4px);
       box-shadow:
-        0 4px 0 rgba(122, 53, 0, 0.86),
-        0 8px 18px rgba(0,0,0,0.24);
+        0 4px 0 rgba(125, 61, 0, 0.84),
+        0 8px 18px rgba(0,0,0,0.2);
     }
 
     button.alt {
-      background: linear-gradient(180deg, #9beeff, #42c8ff 60%, #1f81d9);
+      background: linear-gradient(180deg, #9feeff, #42cafb 60%, #1d80d9);
       box-shadow:
-        0 8px 0 rgba(13, 70, 116, 0.8),
-        0 14px 22px rgba(0,0,0,0.26);
+        0 8px 0 rgba(12, 67, 113, 0.82),
+        0 14px 20px rgba(0,0,0,0.22);
     }
 
     button.warn {
-      background: linear-gradient(180deg, #ffd1eb, #ff68bf 60%, #d2409e);
+      background: linear-gradient(180deg, #ffd8ee, #ff69c2 60%, #d03fa8);
       box-shadow:
-        0 8px 0 rgba(110, 23, 85, 0.8),
-        0 14px 22px rgba(0,0,0,0.26);
-    }
-
-    button:focus-visible {
-      filter: brightness(1.05);
-    }
-
-    .message {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 35;
-      background: rgba(10, 7, 18, 0.34);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
-    }
-
-    .message.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .message-card {
-      background: rgba(20, 13, 31, 0.92);
-      border: 2px solid rgba(255,255,255,0.14);
-      border-radius: 18px;
-      padding: 24px 30px;
-      text-align: center;
-      box-shadow: 0 0 28px rgba(0,0,0,0.5);
-      max-width: 520px;
-    }
-
-    .message-card h2 {
-      margin: 0 0 8px 0;
-      font-size: clamp(28px, 3vw, 44px);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    .message-card p {
-      margin: 0 0 18px 0;
-      color: rgba(255,255,255,0.8);
-      font-size: 16px;
-      line-height: 1.45;
-    }
-
-    .message-card button {
-      min-width: 180px;
+        0 8px 0 rgba(111, 22, 82, 0.84),
+        0 14px 20px rgba(0,0,0,0.22);
     }
 
     @media (max-width: 760px) {
-      .game-shell {
-        width: 96vw;
-        height: 88vh;
-      }
-
-      .fighter-info {
-        width: 42%;
-      }
-
-      .controls {
-        width: 92%;
-        gap: 6px;
-      }
-
-      button {
-        min-width: 110px;
-        padding: 10px 12px;
-      }
+      .game-shell { width: 96vw; height: 88vh; }
+      .fighter-info { width: 42%; }
+      .controls { width: 92%; gap: 8px; }
+      button { min-width: 102px; padding: 10px 12px; }
     }
   </style>
 </head>
@@ -574,10 +545,9 @@
       </div>
     </div>
 
-    <div class="round-tag" id="roundTag">Round 1</div>
-
     <div class="arena" id="arena">
       <div class="sun-glow"></div>
+      <div class="spotlight"></div>
 
       <div class="fighter player" id="player">
         <div class="shadow"></div>
@@ -615,11 +585,11 @@
       <button id="specialBtn" class="warn">Fatality</button>
     </div>
 
-    <div class="message" id="message">
-      <div class="message-card">
-        <h2 id="messageTitle">Győzelem!</h2>
-        <p id="messageText">A családi béke helyreállt.</p>
-        <button id="restartBtn">Új mérkőzés</button>
+    <div class="finish-message" id="finishMessage">
+      <div class="finish-card">
+        <h2 id="finishTitle">Győzelem!</h2>
+        <p id="finishText">A családi béke helyreállt.</p>
+        <button id="restartBtn">Új kör</button>
       </div>
     </div>
   </div>
@@ -633,12 +603,10 @@
     const enemyImpact = document.getElementById('enemyImpact');
     const playerSwoosh = document.getElementById('playerSwoosh');
     const enemySwoosh = document.getElementById('enemySwoosh');
-    const messageBox = document.getElementById('message');
-    const messageTitle = document.getElementById('messageTitle');
-    const messageText = document.getElementById('messageText');
+    const finishMessage = document.getElementById('finishMessage');
+    const finishTitle = document.getElementById('finishTitle');
+    const finishText = document.getElementById('finishText');
     const gameShell = document.getElementById('gameShell');
-    const roundTag = document.getElementById('roundTag');
-
     const punchBtn = document.getElementById('punchBtn');
     const kickBtn = document.getElementById('kickBtn');
     const specialBtn = document.getElementById('specialBtn');
@@ -647,25 +615,9 @@
     const state = {
       playerHP: 100,
       enemyHP: 100,
-      round: 1,
       gameOver: false,
       aiLocked: false
     };
-
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-    function playTone(freq, duration, type = 'square', volume = 0.05) {
-      const oscillator = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      oscillator.type = type;
-      oscillator.frequency.value = freq;
-      gain.gain.value = volume;
-      oscillator.connect(gain);
-      gain.connect(audioCtx.destination);
-      oscillator.start();
-      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
-      oscillator.stop(audioCtx.currentTime + duration);
-    }
 
     function clamp(value, min, max) {
       return Math.min(Math.max(value, min), max);
@@ -681,16 +633,14 @@
       gameShell.classList.add('shake');
     }
 
-    function animateImpact(target, type) {
+    function applyImpact(target, type) {
       target.className = 'impact show ' + type;
-      target.style.left = '50%';
-      target.style.top = '50%';
       setTimeout(() => {
         target.className = 'impact ' + type;
       }, 420);
     }
 
-    function animateSwoosh(target, left, top) {
+    function applySwoosh(target, left, top) {
       target.style.left = left + '%';
       target.style.top = top + '%';
       target.classList.remove('show');
@@ -699,44 +649,42 @@
       setTimeout(() => target.classList.remove('show'), 280);
     }
 
-    function animateAttack(fighter) {
+    function attackAnim(fighter) {
       fighter.classList.remove('attack');
       void fighter.offsetWidth;
       fighter.classList.add('attack');
       setTimeout(() => fighter.classList.remove('attack'), 180);
     }
 
-    function animateHit(fighter) {
+    function hitAnim(fighter) {
       fighter.classList.remove('hit');
       void fighter.offsetWidth;
       fighter.classList.add('hit');
       setTimeout(() => fighter.classList.remove('hit'), 300);
     }
 
-    function damageTarget(target, amount, attacker) {
-      const isPlayer = attacker === 'player';
+    function finishGame(playerWon, text) {
+      state.gameOver = true;
+      finishTitle.textContent = playerWon ? 'Győzelem!' : 'Vereség!';
+      finishText.textContent = text;
+      finishMessage.classList.add('show');
+    }
 
+    function doDamage(target, amount, attacker) {
       if (target === 'player') {
         state.playerHP = clamp(state.playerHP - amount, 0, 100);
         setHealth(playerHealthBar, state.playerHP);
-        animateHit(player);
+        hitAnim(player);
         shakeArena();
-        playTone(120, 0.12, 'sawtooth', 0.07);
       } else {
         state.enemyHP = clamp(state.enemyHP - amount, 0, 100);
         setHealth(enemyHealthBar, state.enemyHP);
-        animateHit(enemy);
+        hitAnim(enemy);
         shakeArena();
-        playTone(210, 0.14, 'square', 0.06);
       }
 
-      if (state.playerHP <= 0) {
-        finishGame(false, 'A mérkőzés véget ért. Az anyós túl erős volt, de a család tovább él…');
-      }
-
-      if (state.enemyHP <= 0) {
-        finishGame(true, 'Kikaptál az anyóstól — de legalább a házban most mindenki csendben nézi a TV-t.');
-      }
+      if (state.playerHP <= 0) finishGame(false, 'Az anyós túl erős volt. A házban továbbra is a családi béke marad a legfontosabb.');
+      if (state.enemyHP <= 0) finishGame(true, 'Szép munka. Az anyós végre megadta magát, és a ház ismét nyugodt hely lett.');
     }
 
     function playerAttack(type) {
@@ -744,29 +692,31 @@
 
       let damage = 8;
       let effectType = 'punch';
-      let swingX = 24;
 
-      if (type === 'kick') { damage = 14; effectType = 'kick'; swingX = 28; }
-      if (type === 'special') { damage = 26; effectType = 'special'; swingX = 34; }
+      if (type === 'kick') {
+        damage = 14;
+        effectType = 'kick';
+      } else if (type === 'special') {
+        damage = (state.enemyHP <= 35) ? 999 : 26;
+        effectType = 'special';
+      }
 
       state.aiLocked = true;
-      animateAttack(player);
-      animateSwoosh(playerSwoosh, 48, 52);
-      animateImpact(playerImpact, effectType);
+      attackAnim(player);
+      applySwoosh(playerSwoosh, 48, 52);
+      applyImpact(playerImpact, effectType);
       playerImpact.style.left = '62%';
       playerImpact.style.top = '54%';
-      playTone(type === 'special' ? 330 : 220, 0.12, 'triangle', type === 'special' ? 0.08 : 0.06);
 
-      const blockRoll = Math.random();
-      const blocked = type !== 'special' && blockRoll > 0.8;
-      const finalDamage = blocked ? Math.ceil(damage * 0.35) : damage;
-
-      if (!blocked) {
-        damageTarget('enemy', finalDamage, 'player');
-      } else {
-        animateHit(enemy);
-        playTone(140, 0.09, 'sine', 0.03);
+      if (type === 'special' && state.enemyHP <= 35) {
+        finishGame(true, 'FATALITY! Az anyós a földre került, és a szobában azonnal elcsendesedett a levegő.');
+        return;
       }
+
+      const blocked = Math.random() > 0.82 && type !== 'special';
+      const finalDamage = blocked ? Math.ceil(damage * 0.35) : damage;
+      if (!blocked) doDamage('enemy', finalDamage, 'player');
+      else hitAnim(enemy);
 
       if (!state.gameOver) {
         setTimeout(() => {
@@ -779,62 +729,39 @@
     function enemyAiTurn() {
       if (state.gameOver) return;
 
-      const moveRoll = Math.random();
+      const roll = Math.random();
       let type = 'punch';
       let damage = 8;
 
-      if (moveRoll > 0.7) {
+      if (roll > 0.7) {
         type = 'kick';
         damage = 14;
       }
-      if (moveRoll > 0.9) {
+      if (roll > 0.9) {
         type = 'special';
         damage = 24;
       }
 
-      animateAttack(enemy);
-      animateSwoosh(enemySwoosh, 58, 52);
-      animateImpact(enemyImpact, type);
+      attackAnim(enemy);
+      applySwoosh(enemySwoosh, 58, 52);
+      applyImpact(enemyImpact, type);
       enemyImpact.style.left = '38%';
       enemyImpact.style.top = '54%';
 
-      const blockChance = Math.random();
-      const blocked = blockChance > 0.82;
-      const finalDamage = blocked ? Math.ceil(damage * 0.4) : damage;
-
-      if (!blocked) {
-        damageTarget('player', finalDamage, 'enemy');
-      } else {
-        animateHit(player);
-        playTone(170, 0.08, 'sine', 0.03);
-      }
-
-      playTone(type === 'special' ? 300 : 180, 0.12, 'sawtooth', type === 'special' ? 0.08 : 0.05);
-    }
-
-    function finishGame(playerWon, text) {
-      state.gameOver = true;
-      messageTitle.textContent = playerWon ? 'Győzelem!' : 'Vereség!';
-      messageText.textContent = text;
-      messageBox.classList.add('show');
-      if (playerWon) {
-        playTone(520, 0.18, 'triangle', 0.08);
-        setTimeout(() => playTone(660, 0.18, 'triangle', 0.08), 120);
-      } else {
-        playTone(220, 0.18, 'sawtooth', 0.07);
-      }
+      const blocked = Math.random() > 0.82;
+      const finalDamage = blocked ? Math.ceil(damage * 0.38) : damage;
+      if (!blocked) doDamage('player', finalDamage, 'enemy');
+      else hitAnim(player);
     }
 
     function resetGame() {
       state.playerHP = 100;
       state.enemyHP = 100;
-      state.round = 1;
       state.gameOver = false;
       state.aiLocked = false;
       setHealth(playerHealthBar, 100);
       setHealth(enemyHealthBar, 100);
-      messageBox.classList.remove('show');
-      roundTag.textContent = 'Round 1';
+      finishMessage.classList.remove('show');
     }
 
     punchBtn.addEventListener('click', () => playerAttack('punch'));
