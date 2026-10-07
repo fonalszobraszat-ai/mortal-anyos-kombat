@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anyós: Fatality</title>
+  <title>Anyós Fatality</title>
   <style>
     :root {
-      --bg1: #0b0814;
-      --bg2: #1d1123;
-      --bg3: #341d3d;
-      --hud: rgba(17, 12, 28, 0.88);
-      --cyan: #82ecff;
-      --cyan2: #2cc0ff;
-      --red: #ff5d73;
-      --red2: #d7264a;
-      --gold: #ffd770;
-      --gold2: #ff9f3f;
-      --violet: #b978ff;
-      --text: #f7f7ff;
-      --shadow: rgba(0,0,0,0.55);
+      --bg1: #090812;
+      --bg2: #180f25;
+      --bg3: #331d41;
+      --panel: rgba(20, 14, 31, 0.9);
+      --cyan: #8aeaff;
+      --cyan2: #29c6ff;
+      --red: #ff637d;
+      --red2: #d7284a;
+      --gold: #ffd56d;
+      --gold2: #ff9e3d;
+      --violet: #cf8dff;
+      --text: #f7f8ff;
+      --shadow: rgba(0,0,0,0.58);
     }
 
     * { box-sizing: border-box; }
@@ -44,12 +44,12 @@
       height: min(760px, 90vh);
       border-radius: 24px;
       overflow: hidden;
+      background: rgba(17, 12, 25, 0.96);
       border: 2px solid rgba(255,255,255,0.12);
-      background: rgba(18, 12, 28, 0.96);
       box-shadow:
         0 0 0 2px rgba(129, 234, 255, 0.08),
-        0 28px 90px rgba(0,0,0,0.62),
-        inset 0 0 24px rgba(255,255,255,0.03);
+        0 30px 90px rgba(0,0,0,0.64),
+        inset 0 0 26px rgba(255,255,255,0.03);
     }
 
     .game-shell.shake {
@@ -68,7 +68,7 @@
       left: 18px;
       right: 18px;
       top: 18px;
-      z-index: 25;
+      z-index: 30;
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -92,10 +92,10 @@
       gap: 10px;
       font-size: 12px;
       letter-spacing: 2px;
-      font-weight: 900;
       text-transform: uppercase;
+      font-weight: 900;
       color: rgba(255,255,255,0.9);
-      text-shadow: 0 4px 12px rgba(0,0,0,0.7);
+      text-shadow: 0 4px 12px rgba(0,0,0,0.72);
     }
 
     .dot {
@@ -117,7 +117,7 @@
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(255,255,255,0.08);
-      box-shadow: inset 0 0 18px rgba(0,0,0,0.42);
+      box-shadow: inset 0 0 18px rgba(0,0,0,0.4);
     }
 
     .health-fill {
@@ -129,13 +129,31 @@
     }
 
     .player .health-fill {
-      background: linear-gradient(90deg, #91edff, #4dcafc 45%, #1f90e8 100%);
-      box-shadow: inset 0 0 12px rgba(255,255,255,0.2);
+      background: linear-gradient(90deg, #8aeaff, #4ecafc 42%, #1d8ff0 100%);
     }
 
     .enemy .health-fill {
-      background: linear-gradient(90deg, #ffa2a6, #ff566a 45%, #d3244d 100%);
-      box-shadow: inset 0 0 12px rgba(255,255,255,0.18);
+      background: linear-gradient(90deg, #ffaba8, #ff5867 42%, #cd2148 100%);
+    }
+
+    .status-box {
+      position: absolute;
+      left: 50%;
+      top: 70px;
+      transform: translateX(-50%);
+      z-index: 25;
+      min-width: 200px;
+      text-align: center;
+      background: rgba(12, 9, 20, 0.48);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 999px;
+      padding: 7px 16px;
+      color: rgba(255,255,255,0.9);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 800;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.2);
     }
 
     .arena {
@@ -143,8 +161,8 @@
       width: 100%;
       height: 100%;
       background:
-        radial-gradient(circle at 50% 18%, rgba(130, 120, 255, 0.28), transparent 20%),
-        linear-gradient(180deg, #151425 0%, #391b45 32%, #2a1a2d 100%);
+        radial-gradient(circle at 50% 18%, rgba(128, 118, 255, 0.28), transparent 22%),
+        linear-gradient(180deg, #171827 0%, #3a1d41 32%, #2a1a2f 100%);
       overflow: hidden;
     }
 
@@ -154,8 +172,8 @@
       inset: 0;
       background: repeating-linear-gradient(
         90deg,
-        rgba(255,255,255,0.025) 0,
-        rgba(255,255,255,0.025) 1px,
+        rgba(255,255,255,0.024) 0,
+        rgba(255,255,255,0.024) 1px,
         transparent 1px,
         transparent 28px
       );
@@ -170,14 +188,14 @@
       width: 420px;
       height: 300px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,255,255,0.25), rgba(126,110,255,0.16), transparent 68%);
+      background: radial-gradient(circle, rgba(255,255,255,0.22), rgba(126,110,255,0.14), transparent 68%);
       filter: blur(18px);
     }
 
     .spotlight {
       position: absolute;
       left: 50%;
-      top: 28%;
+      top: 30%;
       transform: translateX(-50%);
       width: 620px;
       height: 260px;
@@ -192,7 +210,7 @@
       bottom: 0;
       height: 140px;
       background:
-        linear-gradient(180deg, rgba(0, 0, 0, 0.0), rgba(0,0,0,0.22)),
+        linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.22)),
         linear-gradient(90deg, #2a2430, #1f1b2d 36%, #2d263a 100%);
       border-top: 4px solid rgba(255,255,255,0.08);
       box-shadow: inset 0 10px 18px rgba(255,255,255,0.04);
@@ -236,7 +254,7 @@
       height: 22px;
       transform: translateX(-50%);
       border-radius: 50%;
-      background: rgba(0, 0, 0, 0.34);
+      background: rgba(0,0,0,0.34);
       filter: blur(3px);
     }
 
@@ -439,7 +457,7 @@
       padding: 24px 28px;
       text-align: center;
       box-shadow: 0 0 32px rgba(0,0,0,0.48);
-      max-width: 500px;
+      max-width: 520px;
     }
 
     .finish-card h2 {
@@ -489,7 +507,7 @@
       box-shadow:
         0 8px 0 rgba(125, 61, 0, 0.84),
         0 14px 20px rgba(0,0,0,0.22);
-      transition: transform 0.08s ease, box-shadow 0.08s ease;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.2s ease;
     }
 
     button:active {
@@ -545,6 +563,8 @@
       </div>
     </div>
 
+    <div class="status-box" id="statusBox">Küzdelem</div>
+
     <div class="arena" id="arena">
       <div class="sun-glow"></div>
       <div class="spotlight"></div>
@@ -599,6 +619,7 @@
     const enemy = document.getElementById('enemy');
     const playerHealthBar = document.getElementById('playerHealth');
     const enemyHealthBar = document.getElementById('enemyHealth');
+    const statusBox = document.getElementById('statusBox');
     const playerImpact = document.getElementById('playerImpact');
     const enemyImpact = document.getElementById('enemyImpact');
     const playerSwoosh = document.getElementById('playerSwoosh');
@@ -616,7 +637,9 @@
       playerHP: 100,
       enemyHP: 100,
       gameOver: false,
-      aiLocked: false
+      aiLocked: false,
+      combo: 0,
+      lastMove: 'Küzdelem'
     };
 
     function clamp(value, min, max) {
@@ -625,6 +648,10 @@
 
     function setHealth(el, value) {
       el.style.width = value + '%';
+    }
+
+    function setStatus(text) {
+      statusBox.textContent = text;
     }
 
     function shakeArena() {
@@ -668,9 +695,10 @@
       finishTitle.textContent = playerWon ? 'Győzelem!' : 'Vereség!';
       finishText.textContent = text;
       finishMessage.classList.add('show');
+      setStatus(playerWon ? 'Kikaptad az anyóst' : 'Megdőltél');
     }
 
-    function doDamage(target, amount, attacker) {
+    function doDamage(target, amount) {
       if (target === 'player') {
         state.playerHP = clamp(state.playerHP - amount, 0, 100);
         setHealth(playerHealthBar, state.playerHP);
@@ -683,8 +711,13 @@
         shakeArena();
       }
 
-      if (state.playerHP <= 0) finishGame(false, 'Az anyós túl erős volt. A házban továbbra is a családi béke marad a legfontosabb.');
-      if (state.enemyHP <= 0) finishGame(true, 'Szép munka. Az anyós végre megadta magát, és a ház ismét nyugodt hely lett.');
+      if (state.playerHP <= 0) {
+        finishGame(false, 'Az anyós végzett veled. A családközösségben most már senki nem kérdezi meg, ki nyert.');
+      }
+
+      if (state.enemyHP <= 0) {
+        finishGame(true, 'FATALITY! Az anyós a földre került, a szoba csendben maradt, és a család végre levegőt kapott.');
+      }
     }
 
     function playerAttack(type) {
@@ -697,7 +730,7 @@
         damage = 14;
         effectType = 'kick';
       } else if (type === 'special') {
-        damage = (state.enemyHP <= 35) ? 999 : 26;
+        damage = 24;
         effectType = 'special';
       }
 
@@ -709,20 +742,29 @@
       playerImpact.style.top = '54%';
 
       if (type === 'special' && state.enemyHP <= 35) {
-        finishGame(true, 'FATALITY! Az anyós a földre került, és a szobában azonnal elcsendesedett a levegő.');
+        state.enemyHP = 0;
+        setHealth(enemyHealthBar, 0);
+        finishGame(true, 'FATALITY! A végső csapás megsemmisítette az anyóst. A család életet nyert.');
         return;
       }
 
       const blocked = Math.random() > 0.82 && type !== 'special';
       const finalDamage = blocked ? Math.ceil(damage * 0.35) : damage;
-      if (!blocked) doDamage('enemy', finalDamage, 'player');
-      else hitAnim(enemy);
+
+      if (!blocked) {
+        doDamage('enemy', finalDamage);
+        state.combo += 1;
+        setStatus(type === 'special' ? 'Pörgetett kombináció!' : 'Kombó!');
+      } else {
+        hitAnim(enemy);
+        setStatus('Az anyós blokkolt!');
+      }
 
       if (!state.gameOver) {
         setTimeout(() => {
           state.aiLocked = false;
           if (!state.gameOver) enemyAiTurn();
-        }, 420);
+        }, 440);
       }
     }
 
@@ -733,7 +775,7 @@
       let type = 'punch';
       let damage = 8;
 
-      if (roll > 0.7) {
+      if (roll > 0.68) {
         type = 'kick';
         damage = 14;
       }
@@ -750,8 +792,14 @@
 
       const blocked = Math.random() > 0.82;
       const finalDamage = blocked ? Math.ceil(damage * 0.38) : damage;
-      if (!blocked) doDamage('player', finalDamage, 'enemy');
-      else hitAnim(player);
+
+      if (!blocked) {
+        doDamage('player', finalDamage);
+        setStatus(type === 'special' ? 'Az anyós különlegeset dobott!' : 'Az anyós támad!');
+      } else {
+        hitAnim(player);
+        setStatus('Blokkoltad az anyós támadását!');
+      }
     }
 
     function resetGame() {
@@ -759,9 +807,11 @@
       state.enemyHP = 100;
       state.gameOver = false;
       state.aiLocked = false;
+      state.combo = 0;
       setHealth(playerHealthBar, 100);
       setHealth(enemyHealthBar, 100);
       finishMessage.classList.remove('show');
+      setStatus('Küzdelem');
     }
 
     punchBtn.addEventListener('click', () => playerAttack('punch'));
